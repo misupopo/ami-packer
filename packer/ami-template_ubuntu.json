@@ -1,0 +1,44 @@
+{
+    "variables": {
+        "aws_region": "",
+        "aws_vpc_id": "",
+        "aws_subnet_id": "",
+        "aws_instance_role": "",
+        "aws_source_ami": "",
+        "aws_keypair_name": "",
+        "aws_key_file": ""
+    },
+    "builders": [{
+        "type": "amazon-ebs",
+        "communicator": "ssh",
+        "region": "{{user `aws_region`}}",
+        "source_ami_filter": {
+            "filters": {
+                "virtualization-type": "hvm",
+                "name": "ubuntu/images/*ubuntu-xenial-16.04-amd64-server-*",
+                "root-device-type": "ebs"
+            },
+            "owners": ["099720109477"],
+            "most_recent": true
+        },
+        "instance_type": "t2.micro",
+        "iam_instance_profile": "{{user `aws_instance_role`}}",
+        "ssh_keypair_name": "{{user `aws_keypair_name`}}",
+        "ssh_private_key_file": "{{user `aws_key_file`}}",
+        "ssh_username": "ubuntu",
+        "ssh_timeout": "5m",
+        "vpc_id": "{{user `aws_vpc_id`}}",
+        "subnet_id": "{{user `aws_subnet_id`}}",
+        "ami_name": "packer-ubuntu-example"
+    }],
+    "provisioners": [
+        {
+            "type": "ansible",
+            "playbook_file": "ansible/{{user `provision_target`}}.yml",
+            "ssh_host_key_file": "{{user `aws_key_file`}}",
+            "user": "ec2-user",
+            "ansible_env_vars": [
+            ]
+        }
+    ]
+}

@@ -1,0 +1,10 @@
+{
+    "aws_region": "ap-northeast-1",
+    "aws_vpc_id": "vpc-0e4ba5b2cf6827652",
+    "aws_subnet_id": "subnet-0854e8cb2fe674197",
+    "aws_keypair_name": "customKey",
+    "provision_target": "ubuntu",
+    "aws_source_ami": "ami-ceafcba8",
+    "instance_tag_prefix": "PACKER",
+    "packer_tag_prefix":  "Packer-ami"
+}

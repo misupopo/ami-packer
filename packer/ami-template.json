@@ -1,0 +1,60 @@
+{
+    "variables": {
+        "aws_region": "",
+        "aws_vpc_id": "",
+        "aws_subnet_id": "",
+        "aws_instance_role": "",
+        "aws_source_ami": "",
+        "aws_keypair_name": "",
+        "aws_key_file": "",
+        "isotime": "{{isotime \"20060102-030405+0900\" }}",
+        "instance_tag_prefix": "",
+        "packer_tag_prefix": ""
+    },
+    "builders": [{
+        "type": "amazon-ebs",
+        "communicator": "ssh",
+        "region": "{{user `aws_region`}}",
+        "source_ami": "{{user `aws_source_ami`}}",
+        "instance_type": "t2.small",
+        "run_tags": {
+            "Name": "{{user `packer_tag_prefix`}}_{{user `isotime`}}"
+        },
+        "iam_instance_profile": "{{user `aws_instance_role`}}",
+        "ssh_keypair_name": "{{user `aws_keypair_name`}}",
+        "ssh_private_key_file": "{{user `aws_key_file`}}",
+        "ssh_username": "ec2-user",
+        "ssh_timeout": "5m",
+        "ssh_pty": true,
+        "associate_public_ip_address": true,
+        "launch_block_device_mappings": [
+            {
+                "device_name": "/dev/xvda",
+                "volume_size": 100,
+                "delete_on_termination": true
+            },
+            {
+                "device_name": "/dev/xvdcz",
+                "volume_size": 200,
+                "volume_type": "gp2",
+                "delete_on_termination": true
+            }
+        ],
+        "tags" : {
+            "Name" : "{{user `instance_tag_prefix`}}_{{user `isotime` | clean_ami_name}}"
+        },
+        "vpc_id": "{{user `aws_vpc_id`}}",
+        "subnet_id": "{{user `aws_subnet_id`}}",
+        "ami_name": "packer-example"
+    }],
+    "provisioners": [
+        {
+            "type": "ansible",
+            "playbook_file": "ansible/base.yml",
+            "ssh_host_key_file": "{{user `aws_key_file`}}",
+            "user": "ec2-user",
+            "ansible_env_vars": [
+            ]
+        }
+    ]
+}

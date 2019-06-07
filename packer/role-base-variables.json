@@ -1,0 +1,6 @@
+{
+    "packer_tag_prefix":  "Packer-Base-AMI",
+    "instance_tag_prefix": "HOME_BASE",
+    "aws_source_ami": "ami-ceafcba8",
+    "provision_target": "base"
+}

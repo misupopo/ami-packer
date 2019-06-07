@@ -1,0 +1,3 @@
+
+- name: Copy .bash_profile file
+  copy: src=bash_profile dest=/home/vagrant/.bash_profile

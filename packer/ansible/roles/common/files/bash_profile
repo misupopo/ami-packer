@@ -1,0 +1,2 @@
+. $HOME/.bashrc
+export PATH=$HOME/.nodebrew/current/bin:$PATH
