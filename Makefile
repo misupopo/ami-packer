@@ -25,3 +25,10 @@ test-local:
 		-var 'ssh_key=$(CURDIR)/.vagrant/machines/default/virtualbox/private_key' \
 		ami-template-local.json && \
 		vagrant sandbox rollback
+
+create-sample-ami:
+	@${CD} && \
+		PACKER_LOG=1 \
+		packer build --force \
+		-var 'aws_key_file=../customKey.pem' \
+		sampleAmazonEbs.json
